@@ -1,0 +1,62 @@
+
+
+git token : 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
+dockerhub token : dckr_pat_ixt86IOhby2dyGfCUCJCIAGYLTI
+
+https://labs.play-with-docker.com/
+Ctrl + Insert to copy	
+Shift + Insert to paste	
+	
+PortainerAdmin1	
+
+
+uname -a
+docker ps	
+docker images
+docker inspect	demoapp
+	
+docker pull jenkins/jenkins	
+docker pull nginx	
+
+docker run -dp 8080:8080 jenkins/jenkins	
+docker exec name /bin/bash	
+
+docker run -dp 8080:8080 demoapp
+docker exec demoapp /bin/bash	
+
+
+docker buildx build -t mylearning:demoapp --progress=plain --no-cache .
+
+docker tag local-image:tagname namespace/new-repo:tagname
+docker tag mylearning:demoapp swamyraj/mylearning:demoapp
+
+docker login -u swamyraj
+dckr_pat_ixt86IOhby2dyGfCUCJCIAGYLTI
+
+docker push namespace/new-repo:tagname
+docker push swamyraj/mylearning:demoapp
+
+
+docker run --name demoapp -dp 8080:8080 mylearning:demoapp
+docker run --name demoapp -dp 8080:8080 swamyraj/mylearning:demoapp
+
+http://localhost:8080/api/demo/test/docker/container
+
+
+
+docker buildx ls 
+docker buildx create mycontext1
+docker buildx build .
+docker buildx build -t mylearning:demoapp --progress=plain --no-cache .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sunnybhambhani/multi_test:v2 
+docker buildx build --allow security.insecure
+
+
+docker volume create portainer_data
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+https://ip172-18-0-26-ci4r87ksnmng00bikc20-9443.direct.labs.play-with-docker.com:9443/
+PortainerAdmin1
+
+
+
+
