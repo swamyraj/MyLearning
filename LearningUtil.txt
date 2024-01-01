@@ -1,9 +1,10 @@
+=======================================================
+MyLearning
+=======================================================
+git token : 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_AJP
+dockerhub token : dckr_pat_ixt86IOhby2dyGfCUCJCIAGYLTI_RAJ
 
-
-git token : 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
-dockerhub token : dckr_pat_ixt86IOhby2dyGfCUCJCIAGYLTI
-
-https://labs.play-with-docker.com/
+https://labs.play-with-docker.com/  --- alipne linux
 Ctrl + Insert to copy	
 Shift + Insert to paste	
 	
@@ -56,6 +57,358 @@ docker volume create portainer_data
 docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 https://ip172-18-0-26-ci4r87ksnmng00bikc20-9443.direct.labs.play-with-docker.com:9443/
 PortainerAdmin1
+
+
+============================================================================================================
+https://labs.play-with-k8s.com/  --- ubuntu
+
+hostname -I | awk '{print $1}'
+ip route get 1.2.3.4 | awk '{print $7}'
+ss -lntup
+more /etc/hosts
+
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+https://snapcraft.io/install/kube-proxy/centos
+
+
+
+You can bootstrap a cluster as follows:
+
+ 1. Initializes cluster master node:
+
+ kubeadm init --apiserver-advertise-address $(hostname -i) --pod-network-cidr 10.5.0.0/16
+
+
+ 2. Initialize cluster networking:
+
+ kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml
+
+
+ 3. (Optional) Create an nginx deployment:
+
+ kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/application/nginx-app.yaml
+ 
+ 
+  
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm token create --print-join-command
+
+kubeadm join 192.168.0.13:6443 --token vl8ykj.sye302jwerxg8py1 --discovery-token-ca-cert-hash sha256:f56ddc8893634c265b4db8cb094ed4e7e458da6d385674a4e19dfefecdc838a0 
+kubeadm join 192.168.0.8:6443  --v=5 --token w17tn1.l50ilaatz4ubvop9  --discovery-token-ca-cert-hash sha256:bc758174b2d389bcf67ac0133eea05ddcc8db7513eaee43d94ea4eb0224660		
+kubeadm join 192.168.0.8:6443 --token ol7bv2.na1mxsqmity3zrvu --discovery-token-ca-cert-hash sha256:bc758174b2d389bcf67ac0133eea05ddcc8db7513eaee43d94ea4eb0224660f6
+kubeadm join 192.168.0.23:6443 --token 7fakyy.70r29zxx86114wq3 --discovery-token-ca-cert-hash sha256:65ae497db33dfb90473be1fe333e4aab7a502d2d70306b6ee31553f79c12ee17		
+kubeadm join 192.168.0.23:6443 --token 0b361p.arxswr63gnv8fnjy --discovery-token-ca-cert-hash sha256:efcc15257eab43c50f0d9673979bee13f2e7e0407a1f592dca4e0925d27aa00c		
+ kubeadm join 192.168.0.18:6443 --token hr6q4y.v4ybgv75havbpmf5 --discovery-token-ca-cert-hash sha256:0674764e4d5a42886e588c9c25201cc83fee8dfb9b43bfb4e02cebf333ddbd7b
+ 
+ 
+kubectl expose service <service-name> --type=NodePort --name=<exposed-service-name> --port=<port> --target-port=<target-port>
+kubectl expose service kubernetes --type=NodePort --name=kubernetes --port=6443 --target-port=6443
+
+
+kubernetes dashboard:
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+kubectl expose deployment kubernetes-dashboard -n kubernetes-dashboard --type=LoadBalancer --name=kdash --port=8080 --target-port=8443
+kubectl patch svc kdash -n kubernetes-dashboard -p '{"spec": {"type": "NodePort", "externalIPs":["192.168.0.18"]}}'
+https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
+
+
+portainer dashboard:
+kubectl apply -n portainer -f https://downloads.portainer.io/ce2-18/portainer-lb.yaml
+
+--to create portianer to allow to use defacult storageClasess
+kubectl patch deployments -n portainer portainer -p '{"spec": {"template": {"spec": {"nodeSelector": {"kubernetes.io/hostname": "'$(kubectl get pods -n portainer -o jsonpath='{ ..nodeName }')'"}}}}}' || (echo Failed to identify current node of portainer pod; exit 1)
+
+kubectl patch deployments -n portainer portainer -p '{"spec": {"template": {"spec": {"nodeSelector": {"kubernetes.io/hostname": "node2"}}}}}'
+
+kubectl apply -f https://downloads.portainer.io/ce2-18/portainer-agent-k8s-lb.yaml
+kubectl apply -f https://downloads.portainer.io/ce2-18/portainer-agent-k8s-nodeport.yaml
+
+kubectl -n portainer port-forward svc/portainer-agent 8443:9001
+
+nginx:
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/application/nginx-app.yaml
+kubectl expose service nginx --type=NodePort --name=nginx --port=8080 --target-port=8080
+
+kubectl api-resources
+kubectl config view
+kubectl cluster-info
+kubectl cluster-info dump
+kubectl get componentstatuses
+kubectl get namespaces
+kubectl get nodes -o wide --all-namespaces
+kubectl get nodes --show-labels -o wide
+kubectl get deployments --namespace=portainer
+kubectl get deployments --namespace=kubernetes-dashboard
+kubectl get rs
+kubectl get services --namespace=kubernetes-dashboard -o wide
+kubectl get services --namespace=portainer -o wide
+kubectl get events --namespace=portainer
+kubectl get events --namespace=kubernetes-dashboard
+kubectl get storageclasses
+kubectl get sc
+kubectl get persistentvolumes
+kubectl get pv
+kubectl get persistentvolumeclaims
+kubectl get pvc portainer --namespace=portainer
+kubectl get pods --show-labels
+kubectl get pods --all-namespaces -o wide
+kubectl get pods --namespace=default -o wide
+kubectl get pods --namespace=kube-system -o wide
+kubectl get pods --namespace=portainer  -o wide
+kubectl get pods --namespace=kubernetes-dashboard -o wide
+
+kubectl describe namespace portainer
+kubectl describe node node1
+kubectl describe pod portainer-76f54b9f45-7jv79 --namespace=portainer
+kubectl describe pod kubernetes-dashboard-6967859bff-gr7qx --namespace=kubernetes-dashboard
+kubectl describe pv p-volume
+kubectl describe pvc portainer --namespace=portainer
+kubectl describe deployment my-nginx
+kubectl describe deployment kubernetes-dashboard --namespace=kubernetes-dashboard
+kubectl describe service kdash --namespace=kubernetes-dashboard
+kubectl describe service portainer --namespace=portainer
+kubectl describe service portainer --namespace=portainer-agent
+
+kubectl delete persistentvolumeclaim/portainer --namespace=portainer
+kubectl delete persistentvolume/p-volume
+kubectl delete storageclass/generic
+kubectl delete pod portainer-86f78779d5-5bwp7 --namespace=portainer
+kubectl delete persistentvolumeclaim/portainer --namespace=portainer
+
+kubectl label nodes node2 io.portainer.kubernetes.application.stack=portainer	
+kubectl label nodes node2 app.kubernetes.io/name=portainer
+kubectl label nodes node2 app.kubernetes.io/instance=portainer
+kubectl label nodes node2 app.kubernetes.io/version="ce-latest-ee-2.18.3"
+
+kubectl taint nodes node2 app.kubernetes.io/name=portainer:NoExecute
+kubectl taint nodes node2 app.kubernetes.io/name=portainer:NoExecute
+kubectl taint nodes node2 app.kubernetes.io/name=portainer:NoExecute-
+
+-- to make the master node  and worker node in the same server 
+kubectl taint nodes node1 node-role.kubernetes.io/control-plane:NoSchedule-
+kubectl taint nodes node1 node-role.kubernetes.io/control-plane-
+
+kubectl label nodes node1 nodePool=cluster
+
+
+kubectl apply -f storage.yaml
+kubectl apply -f pv.yaml
+kubectl apply -f pvc.yaml
+
+
+apiVersion: "storage.k8s.io/v1"
+kind: StorageClass
+metadata:
+  name: generic
+provisioner: storageclass.kubernetes.io/is-default-class
+volumeBindingMode: Immediate
+reclaimPolicy: Retain
+
+
+
+---
+kind: PersistentVolume
+apiVersion: "v1"
+metadata:
+  name: persistent-volume
+spec:
+  capacity:
+   storage: 10Gi
+  accessModes:
+   - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+  storageClassName: generic
+---
+kind: "PersistentVolumeClaim"
+apiVersion: "v1"
+metadata:
+  name: portainer
+  namespace: portainer  
+  annotations:
+    volume.alpha.kubernetes.io/storage-class: "generic"
+  labels:
+    io.portainer.kubernetes.application.stack: portainer
+    app.kubernetes.io/name: portainer
+    app.kubernetes.io/instance: portainer
+    app.kubernetes.io/version: "ce-latest-ee-2.18.3"
+spec:
+  storageClassName: generic
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "10Gi"
+	  
+  
+
+
+
+
+
+
+
+
+==========================================================================================================================================
+MONGO DB
+
+mongod.exe --dbpath=C:\swamy\softwares\mongodb-windows-x86_64-6.0.1\mongodb-win32-x86_64-windows-6.0.1\data\db
+mongod.exe --dbpath=C:\swamy\softwares\mongodb-windows-x86_64-6.0.1\mongodb-win32-x86_64-windows-6.0.1\data\db --replSet replicaSet
+
+show dbs
+use mytest
+db.dropDatabase();
+
+db.createCollection("mycollection")
+
+show collections
+
+db.movie.insertOne({"name":"tutorials point"})
+db.movie.insertOne({"age":"tutorials point"})
+db.movie.insertMany([
+{item:"test",qty:12}
+])
+
+db.products.insertMany([
+  { _id: 11, item: "pencil", qty: 50, type: "no.2" },
+  { item: "pen", qty: 20 },
+  { item: "eraser", qty: 25 }
+])
+
+db.mycollection.drop();
+
+_id: ObjectId(4 bytes timestamp, 3 bytes machine id, 2 bytes process id, 3 bytes incrementer)
+
+
+db.createCollection("post")
+db.post.insert([
+	{
+		title: "MongoDB Overview",
+		description: "MongoDB is no SQL database",
+		by: "tutorials point",
+		url: "http://www.tutorialspoint.com",
+		tags: ["mongodb", "database", "NoSQL"],
+		likes: 100
+	},
+	{
+	title: "NoSQL Database",
+	description: "NoSQL database doesn't have tables",
+	by: "tutorials point",
+	url: "http://www.tutorialspoint.com",
+	tags: ["mongodb", "database", "NoSQL"],
+	likes: 20,
+	comments: [
+		{
+			user:"user1",
+			message: "My first comment",
+			dateCreated: new Date(2013,11,10,2,35),
+			like: 0
+		}
+	]
+}
+])
+
+
+db.post.find()
+db.post.find().pretty()
+db.psot.find().count()
+db.post.find({likes:100})
+db.post.find({likes:{$lt:100}})
+db.post.find({likes:{$in:[100,20]}})
+db.post.find({$and:[{likes:100},{by:"tutorials point"}]})
+db.post.find({$or:[{likes:100},{by:"tutorials point"}]})
+db.post.find({"likes": {$gt:10}, $or: [{"by": "tutorials point"},
+   {"title": "MongoDB Overview"}]}).pretty()
+
+db.post.updateMany({title:"MongoDB Overview"},{$set:{description:"new MongoDB is no SQL database"}})
+db.post.deleteMany({likes:100})
+db.post.find().limit(1)
+db.post.find({},{title:1,_id:0}).limit(2).skip(1)
+db.post.find().sort({title:-1})
+db.post.find({},{"title":1,_id:0}).sort({"title":1})
+
+db.post.createIndex({"title":1})
+db.post.createIndex({"title":1,"description":-1})
+db.post.dropIndex("title_1")
+db.post.dropIndexes()
+db.post.getIndexes()
+
+db.post.aggregate([{$group : {_id:"$by",num_tutorial:{$sum:1}}}]);
+db.post.aggregate([{$group : {_id:"$by",num_likes:{$sum:"$likes"}}}]);
+
+rs.initiate()
+rs.conf()
+rs.status()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
