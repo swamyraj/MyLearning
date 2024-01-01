@@ -1,0 +1,100 @@
+<div>
+    <h3>test works!</h3>
+    <h3>Welcome {{ name + " you are great!" }} </h3>
+    <h3>10 * 10  =  {{ 10 * 10 }}</h3>
+    <h3>{{name.toUpperCase()}}</h3>
+    <h3>{{greetUser()}}</h3>
+
+    <input [id]="myId" type="text" value="swamy">
+    <br>
+    <input [disabled]="isDisabled" type="text" value="swamy isDisabled {{isDisabled}}">
+
+    <h2 class="text-success"> class binding practice</h2>
+    <h2 [class]="testSuccess"> class binding practice</h2>
+    <h2 class="text-danger"> class binding practice</h2>
+    <h2 [class.text-danger]="hasError"> conditional class binding practice</h2>
+    <h2 [ngClass]="messagesClass"> ngClass binding practice</h2>
+
+    <h2 [style.color]="'orange'"> style binding practice</h2>
+    <h2 [style.color]="hasError? 'red':'green'"> conditional style binding practice</h2>
+    <h2 [style.color]="highlightColor"> style binding practice</h2>
+    <h2 [ngStyle]="titleStyles"> ngStyle binding practice</h2>
+
+
+
+    <button (click)="onClick($event)"> Click me</button>  {{greeting1}}
+    <br>
+    <input #myName type="text" value="">
+    <button (click)="logMessage(myName.value)"> Click me</button>  {{greeting2}}
+
+
+    <br>
+    <input [(ngModel)]="twoWayBind" type="text" value=""> {{twoWayBind}}
+
+
+
+    <h2 *ngIf="testNgIf1"> testNgIf1 condition is {{testNgIf1}} </h2>
+
+    <h2 *ngIf="testNgIf2; else elseBlock1"> testNgIf2 condition is {{testNgIf2}} </h2>
+    <ng-template #elseBlock1>
+        <h2> testNgIf2 condition is  {{testNgIf2}} </h2>
+    </ng-template>
+    
+    <div *ngIf="testNgIf3; then thenBlock; else elseBlock2"></div>
+    <ng-template #thenBlock>
+        <h2> testNgIf3 condition is  {{testNgIf3}} : thenBlock</h2>
+    </ng-template>
+    <ng-template #elseBlock2>
+        <h2> testNgIf3 condition is  {{testNgIf3}} : elseBlock </h2>
+    </ng-template>
+
+
+    <div [ngSwitch]="colorName">
+        <div *ngSwitchCase="'red'"> ngSwitch : You choosed red </div>
+        <div *ngSwitchCase="'yellow'"> ngSwitch: You choosed yellow </div>
+        <div *ngSwitchCase="'orange'"> ngSwitch: You choosed orange </div>
+        <div *ngSwitchDefault> ngSwitch : Pick again .I am Default</div>
+    </div>
+
+    <br>
+    <h3>ngFor test</h3>
+    <h3>index color first</h3>
+    <div *ngFor="let color of colors;index as i;first as f">
+        <div>{{i}}   {{color}}    {{f}}</div>
+    </div>
+
+
+    <br>
+    <h3>Parent data : {{pname}}</h3>
+    <button (click)="sendToParent()">click sendToParent</button>
+
+
+    <h3>PIPES</h3>
+    <h3>{{name |lowercase}}</h3>
+    <h3>{{name |uppercase}}</h3>
+    <h3>{{name |slice:2:4}}</h3>
+    <h3>{{person |json}}</h3>
+
+    <h3>{{5.678 | number:'1.2-3'}}</h3>
+    <h3>{{5.678 | number:'3.4-7'}}</h3>
+    <h3>{{5.678 | number:'3.1-2'}}</h3>
+
+    <h3>{{0.25 |percent}}</h3>
+    <h3>{{25 | currency}}</h3>
+    <h3>{{25 | currency: 'INR'}}</h3>
+    <h3>{{25 | currency: 'INR' : 'code'}}</h3>
+
+    <h3>{{date}}</h3>
+    <h3>{{date | date:'short'}}</h3>
+    <h3>{{date | date:'shortDate'}}</h3>
+    <h3>{{date | date:'shortTime'}}</h3>
+    <h3>{{date | date:'mediumDate'}}</h3>
+    <h3>{{date | date:'longDate'}}</h3>
+
+    <h3>EMPLOYEE LIST</h3>
+    <div *ngFor="let employee of employees">
+        <div>{{employee.id}}   {{employee.name}}    </div>
+    </div>
+
+</div>
+
