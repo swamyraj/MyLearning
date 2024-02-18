@@ -33,7 +33,7 @@ public class ThreadCountDownLatchTest {
 
 		for (final BaseHealthChecker v : _services) {
 			executor.execute(v);
-		}
+		} 
 
 		// Now wait till all services are checked
 		_latch.await();

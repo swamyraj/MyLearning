@@ -1,5 +1,9 @@
 package com.practice.java.programs;
 
+/**
+ * FInd the degree between angles in Clock
+ *
+ */
 public class Program10 {
 
 	public static void main(String[] args) {

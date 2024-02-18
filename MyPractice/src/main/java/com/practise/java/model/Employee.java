@@ -46,7 +46,23 @@ public class Employee{
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+
+	@Override
+	public String toString() {
+		return "Employee [name=" + name + ", salary=" + salary + ", age=" + age + "]";
+	}
 	
+	@Override
+	public int hashCode() {
+		return name.hashCode()+Integer.hashCode(age);
+	}
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if(this==obj)return true;
+		if(obj==null || getClass() != obj.getClass())return false;
+		Employee e = (Employee)obj;
+		if(e.getName().equals(name) && e.getAge()== age) return true;
+		return false;
+	}
 }

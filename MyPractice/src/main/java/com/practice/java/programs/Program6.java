@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Formatting output with printf
+ * IndexOutOfBoundsException why?
  *
  */
 public class Program6 {

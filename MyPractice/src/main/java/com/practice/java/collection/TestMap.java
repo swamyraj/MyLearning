@@ -21,16 +21,32 @@ public class TestMap {
 
 	}
 
+	
+	// balanced binary tree - red black tree
 	private static void treeMapTest() {
-		TreeMap<String, Integer> map1 = new TreeMap<>();
-		map1.put("aa", 10);
-		map1.put("cc", 30);
-		map1.put("bb", 20);
+		TreeMap<Integer, String> map1 = new TreeMap<>();
+		map1.put(10,"aa");
+		map1.put(30,"cc");
+		map1.put(20,"bb");
+		map1.put(60,"bb");
+		map1.put(40,"bb");
+		map1.put(50,"bb");
 		System.out.println(map1);
-		NavigableMap<String, Integer> descMap = map1.descendingMap();
+		
+		NavigableMap<Integer,String> descMap = map1.descendingMap();
 		System.out.println(descMap);
-		map1.pollFirstEntry();
-		System.out.println(descMap);
+		System.out.println();
+		//map1.pollFirstEntry();
+		//System.out.println(descMap);
+		System.out.println("Ceiling key : "+map1.ceilingKey(30));
+		System.out.println("floor key : "+map1.floorKey(30));
+		System.out.println();
+		System.out.println("Head map : "+map1.headMap(30));
+		System.out.println("Head map desc: "+descMap.headMap(30));
+		
+		System.out.println("tail map : "+map1.tailMap(30));
+		
+	
 		
 	}
 

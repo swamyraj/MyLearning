@@ -27,7 +27,7 @@ public class FunctionalInterfaceTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+		FunctionalInterfaceTest test = new FunctionalInterfaceTest();
 		
 		FuncInterface ff = (i,j)-> System.out.println(i*j);
 		ff.abstractFunc(10,10);
@@ -109,15 +109,39 @@ public class FunctionalInterfaceTest {
 		BiConsumer<Integer, Integer> bi = (i,j)->System.out.println("i+j = "+i+j);
 		bi.accept(10, 20);
 		
-		//Supplier<String> s = t->return "l";
+		Supplier<String> s = ()->"l";
+		System.out.println("supplier : "+s.get());
+		
+		
 		Function<Integer, String> f = t -> t*2 +" : mutlipied by 2";
+		Function<Integer, Integer> f1 = t -> t+2;
 		System.out.println(f.apply(10));
+		System.out.println("......Fucntion"+f.andThen(a->a+5).apply(10));
+		System.out.println("......Fucntion compose"+f.compose(f1).apply(10));
+		
 		
 		UnaryOperator<String> uo = t->t+"...";
 		System.out.println(uo.apply("im unary operator"));
 		
 		BiFunction<Integer, Integer, String> bif = (i,j)->i*j + " multiply";
 		System.out.println(bif.apply(10, 30));
+		
+		BiFunction<Integer, Integer, Integer> bifu = (i,j)->i*j;
+		System.out.println(".....Bifunction andThen : "+bifu.andThen(f).apply(10, 10));
+		System.out.println(".....Bifunction andThen : "+bifu.andThen(a->a-a).apply(10, 10));
+		
+		BiFunction<Integer, Integer, Integer>  sss= FunctionalInterfaceTest::addNumber;
+		System.out.println(".....Bifunction method reference : "+sss.apply(10, 10));
+		
+		BiFunction<Integer, Integer, Integer>  ssss=test::addNumber1; 
+		
+		Supplier<FunctionalInterfaceTest> sssss=FunctionalInterfaceTest::new;
+		System.out.println(sssss.get() instanceof FunctionalInterfaceTest);
+		
+		TriFunction<Integer, Integer, Integer, Integer> tri = (t,u,v) -> (t+u+v);
+		System.out.println("TriFunction : "+tri.apply(10, 20, 30));
+		System.out.println("TriFunction andthen: "+tri.andThen(a->a+40).apply(10, 20, 30));
+		
 		
 		BinaryOperator<Integer> bo=(i,j)->i*j;
 		System.out.println(bo.apply(50, 50));
@@ -142,5 +166,14 @@ public class FunctionalInterfaceTest {
 		            && (str.chars().allMatch(Character::isLetter)));
 		
 		
+	}
+	
+	
+	public static int addNumber(int a,int b){
+		return a*b;
+	}
+	
+	public int addNumber1(int a,int b){
+		return a*b;
 	}
 }

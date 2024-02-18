@@ -5,13 +5,15 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.practise.java.model.Employee;
+
 public class TestSet {
 
 	public static void main(String[] args) {
 
-		//hashSetTest();
+		hashSetTest();
 		//linkedHashTest();
-		treeSetTest();
+		//treeSetTest();
 
 	}
 
@@ -24,6 +26,14 @@ public class TestSet {
 		System.out.println(set1);
 		System.out.println(set1.contains(10));
 
+		Employee e1 = new Employee("swamy", 2000, 32, null);
+		Employee e2 = new Employee("swamy", 2000, 32, null);
+		Set<Employee> eset = new HashSet();
+		eset.add(e1);
+		eset.add(e2);
+		System.out.println(eset);
+		
+		
 	}
 
 	private static void linkedHashTest() {

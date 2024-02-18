@@ -15,6 +15,13 @@ public class TestList {
 		List<Integer> intList = new ArrayList<Integer>();
 		intList.add(1);
 		intList.remove(0);
+		
+		
+		ArrayList l = new ArrayList<>();
+		l.add(1);
+		l.add("hi");
+		System.out.println(l);
+		
 	}
 
 	public static void linkedListTest() {

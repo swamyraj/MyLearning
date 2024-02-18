@@ -44,7 +44,7 @@ public class DemoApplication  implements CommandLineRunner {
         String[] beans = appContext.getBeanDefinitionNames();
         Arrays.sort(beans);
         for (String bean : beans) {
-           // System.out.println(bean);
+            System.out.println(bean);
            
         }
         method1();

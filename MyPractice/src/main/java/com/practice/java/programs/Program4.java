@@ -14,14 +14,16 @@ public class Program4 {
 
 	public static void main(String[] args) {
 		// reverseString();
-		joinTest();
+		// joinTest();
 		// reverseStringUsingStreams();
 		// printStringStartsWithGivenLetter();
 		// charToUpperCase();
 		// findRepeatedCharsAndCount();
 		// findRepeatedCharsAndCountUsingStreams();
 		// findUniqueCharsUsingStreams();
-		//findUniqueWordUsingStreams
+		// findUniqueCharsUsingStreams();
+		// findNthNonReperatedCharacter();
+		// findUniqueWordUsingStreams();
 
 	}
 
@@ -49,14 +51,8 @@ public class Program4 {
 
 	private static void reverseStringUsingStreams() {
 		String str = "google";
+		
 		IntStream.range(1, str.length()).forEach(i -> System.out.println(i));
-
-		// IntStream.range(0,
-		// str.length()).forEach(i->System.out.println(str.charAt(str.length()-1-i)));
-		// String[] strArray = str.split("");
-		// IntStream.range(0, str.length()).mapToObj(i->
-		// strArray[str.length()-1-i]).collect(Collectors.joining());
-		// Arrays.stream(strArray).reduce("", (res,character)->res+character);
 
 		String result1 = Arrays.stream(str.split("")).sorted((s1, s2) -> -1).collect(Collectors.joining());
 		System.out.println("result1 : " + result1);
@@ -89,6 +85,9 @@ public class Program4 {
 
 		IntStream.range(0, str.length()).forEach(i -> System.out.print(str.charAt(str.length() - 1 - i)));
 		System.out.println();
+		
+		Stream.of(str.split("")).reduce("",(result,i)->i+result);
+		
 
 	}
 
@@ -181,6 +180,16 @@ public class Program4 {
 		String result1 = str.chars().distinct().mapToObj(c -> String.valueOf((char) c)).collect(Collectors.joining());
 		System.out.println("from streams : unique character result1: " + result1);
 
+	}
+
+	// Nth non repeated character
+	private static void findNthNonReperatedCharacter() {
+		String s = "abbbcd";
+		int n = 1;
+		Character character = (Character) s.chars().mapToObj(c -> (char) c)
+				.collect(Collectors.groupingBy(i -> i, LinkedHashMap::new, Collectors.counting())).entrySet().stream()
+				.filter(e -> e.getValue() == 1).skip(n).findFirst().map(e -> e.getKey()).orElse('\0');
+		System.out.println("character: " + character);
 	}
 
 	private static void findUniqueWordUsingStreams() {

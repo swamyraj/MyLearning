@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class OptionalTest {
 
@@ -72,6 +73,10 @@ public class OptionalTest {
 		Optional<String> s2 = t.getString(null);
 		Optional.ofNullable(s2).orElseThrow(() -> new Exception());
 		System.out.println(s2);
+		
+		
+		ConcurrentHashMap.newKeySet();
+		
 
 	}
 }

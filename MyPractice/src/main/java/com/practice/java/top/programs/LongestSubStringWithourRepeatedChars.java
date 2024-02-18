@@ -13,7 +13,11 @@ public class LongestSubStringWithourRepeatedChars {
 
 	public static void main(String[] args) {
 
-		String str = "geeksforgeeks";
+		longestSubString();
+	}
+
+	private static void longestSubString() {
+		String str = "sswamyy";
 		// String str = "bbb";
 
 		if (str.length() == 0)
@@ -30,6 +34,7 @@ public class LongestSubStringWithourRepeatedChars {
 			} else {
 				set.remove(str.charAt(j));
 				i++;
+				j++;
 			}
 			System.out.println(set);
 		}
